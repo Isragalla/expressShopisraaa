@@ -24,37 +24,29 @@
  *     est rejetée avec une RangeError.
  *   - Un id inconnu rejette la promesse comme getProductById.
  */
+const {
+  getProductById,
+  checkStock,
+} = require("../../src/catalog/catalogService/");
 
-const PRODUCTS = [
-  { id: 1, name: 'Casque Bluetooth', category: 'audio', price: 89.9, stock: 12 },
-  { id: 2, name: 'Enceinte portable', category: 'audio', price: 59, stock: 0 },
-  { id: 3, name: 'Aspirateur robot', category: 'maison', price: 249, stock: 3 },
-  { id: 4, name: 'Bouilloire inox', category: 'maison', price: 39.5, stock: 25 },
-  { id: 5, name: 'Souris sans fil', category: 'informatique', price: 24.9, stock: 40 },
-  { id: 6, name: 'Clavier mécanique', category: 'informatique', price: 119, stock: 7 },
-];
+test("getProductById renvoie le produit pour un id existant", async () => {
+  const product = await getProductById(1);
 
-const DELAY_MS = 20;
+  expect(product).toEqual({
+    id: 1,
+    name: "Casque Bluetooth",
+    category: "audio",
+    price: 89.9,
+    stock: 12,
+  });
+});
 
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+test("getProductById rejette un id inconnu", async () => {
+  expect.assertions(1);
 
-async function getProductById(id) {
-  await wait(DELAY_MS);
-  const product = PRODUCTS.find((p) => p.id === id);
-  return product ? { ...product } : undefined;
-}
+  await expect(getProductById(8)).rejects.toThrow("Produit introuvalbe : 8");
+});
 
-async function getProductsByCategory(category) {
-  await wait(DELAY_MS);
-  return PRODUCTS.filter((p) => p.category === category).map((p) => ({ ...p }));
-}
-
-async function checkStock(id, quantity) {
-  const product = await getProductById(id);
-  if (!product) {
-    throw new Error(`Produit introuvable : ${id}`);
-  }
-  return product.stock >= quantity;
-}
-
-module.exports = { getProductById, getProductsByCategory, checkStock };
+test("checkStock renvoie falsse quand le stock est insuffissant", async () => {
+  await exepct(checkStock(2, 1)).resolves.toBe(false);
+});
