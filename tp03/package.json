@@ -1,0 +1,20 @@
+{
+  "name": "expressshop",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Projet fil rouge du module Qualité logicielle et tests automatisés",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "mutation": "stryker run"
+  },
+  "engines": {
+    "node": "^22.0.0 || >=24.0.0"
+  },
+  "devDependencies": {
+    "@stryker-mutator/core": "10.1.1",
+    "@stryker-mutator/jest-runner": "10.1.1",
+    "jest": "30.5.2"
+  }
+}
